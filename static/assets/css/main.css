@@ -1,0 +1,58 @@
+.weather_box {
+  box-shadow: 0 2.5rem 2rem -2rem hsl(200 50% 20% / 40%);
+  white-space: normal;
+  background: hsl(0 0% 100%);
+  color: hsl(200 50% 20%);
+  line-height: 1.5;
+  font-size: 1.5rem;
+  font-weight: 300;
+  width: auto;
+  height: auto;
+  display: flex;
+  place-items: center;
+  text-align: center;
+  padding: 3ch;
+  border-radius: 2ch;
+  border: 1px solid hsl(0 0% 83%);
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  grid-auto-rows: minmax(100px, auto);
+}
+
+.wrapper {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  grid-auto-rows: minmax(100px, auto);
+}
+
+.header {
+  position:fixed;
+  top:0;
+  left: 50%
+  width:100%;
+  z-index:100;
+  text-align: center;
+  display: flex;
+  padding: 60px;
+}
+
+html {
+  block-size: 100%;
+  inline-size: 100%;
+  background: hsl(0 0% 85%);
+}
+
+body {
+  min-block-size: 100%;
+  min-inline-size: 100%;
+  margin: 0;
+  box-sizing: border-box;
+  display: grid;
+  grid-auto-flow: column;
+  gap: 5vmin;
+  place-content: center;
+  font-family: system-ui;
+}

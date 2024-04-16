@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+    <form action="/" method="post">
+        <input autocomplete="off" autofocus name="latitude" placeholder="latitude" type="text">
+        <input autocomplete="off" autofocus name="longitude" placeholder="longitude" type="text">
+        <button type="submit">Submit</button>
+    </form>
+
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block body %}
+    <div class="wrapper">
+    {% for index, row in name.iterrows() %}
+        <div class="weather_box">
+            <h1>Time:</h1>
+            <h2> {{ row['date'].hour }}:00</h2>
+            <h1>Weather:</h1>
+            <h2> {{ row.weather }}</h2>
+            <h1>Temp:</h1>
+            <h2> {{ row['temperature_2m'] }} Celsius</h2>
+            <h1>Wind speed:</h1>
+            <h2> {{ row['wind_speed_10m'] }} Mph</h2>
+        </div>
+    {% endfor %}
+    </div>
+{% endblock %}
