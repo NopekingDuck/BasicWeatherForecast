@@ -1,5 +1,4 @@
-from flask import Flask, request, jsonify, render_template
-from markupsafe import escape#
+from flask import Flask, request, render_template
 import get_weather
 import helpers
 
