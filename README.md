@@ -1,5 +1,5 @@
 <h1 align="center">Weather App</h1>
-This is a project to get weather data from the [openmeteo api](https://open-meteo.com/) and display it in a webpage using flask.
+This is a project to get weather data from the https://open-meteo.com/ API and display it in a webpage using flask.
 
 <h2>Features</h2> 
 <ul>
@@ -7,9 +7,12 @@ This is a project to get weather data from the [openmeteo api](https://open-mete
 </ul>
 
 <h2>Screenshot</h2>
-![A screenshot of the index of the weather app](https://github.com/user-attachments/assets/e5501ed3-747e-47e6-8096-47003f3d0d1a)
-![A screenshot of the results page of the weather app, slightly zomed out](https://github.com/user-attachments/assets/0bf12884-1f52-41da-be49-9552f810150a)
 
+Index:
+![A screenshot of the index of the weather app](https://github.com/user-attachments/assets/f3dd41d5-9a58-4845-9fa1-4a48bc2b5f6f)
+
+Slightly zoomed out results:
+![A screenshot of the results page of the weather app, slightly zoomed out](https://github.com/user-attachments/assets/ccc2807a-f85b-48bf-af44-df17dfa5481a)
 
 
 <h2>Getting Started</h2>
@@ -24,7 +27,8 @@ This is a project to get weather data from the [openmeteo api](https://open-mete
 <h2>Future Improvements</h2>
 <ul>
   <li>Improved layout of return results</li>
-  <li>Example Coordinates options to allow quicker selection </li>
+  <li>Example Coordinates options to allow quicker selection</li>
+  <li>Validation on inputs</li>
 </ul>
 
 
