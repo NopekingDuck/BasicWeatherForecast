@@ -33,25 +33,25 @@ def get_data_from_api(url):
     try:
         response = http.request("GET", url, timeout=Timeout(connect=1.0, read=2.0))
         if response.status >= 400:
-            print(f"Error connecting to api. HTTP error status code: {response.status}")
+            raise Exception(f"Error connecting to api. HTTP error status code: {response.status}")
         else:
             print("Request successful")
             data = response.data
             values = json.loads(data)
             return values
     except urllib3.exceptions.MaxRetryError as e:
-        print(f"Max retries exceeded with url: {e.reason}")
+        raise Exception(f"Max retries exceeded with url: {e.reason}")
     except urllib3.exceptions.TimeoutError as e:
-        print(f"Request timed out: {e}")
+        raise Exception(f"Request timed out: {e}")
     except Exception as e:
-        print(f"An unexpected error occurred: {e}")
+        raise Exception(f"An unexpected error occurred: {e}")
 
 
 def response_to_pandas(response, weather_types):
     try:
         hourly = response["hourly"]
     except TypeError as e:
-        print("No response received from Weather source")
+        raise Exception(f"No response received from Weather source: {e}")
     date_column = {
         "date": pd.date_range(
                 start=pd.to_datetime(hourly["time"][0]),
@@ -74,7 +74,7 @@ def get_weather(coords):
         with open("static/assets/json/variables.json") as variables_json:
             variables = json.load(variables_json)
     except JSONDecodeError as e:
-        print(e)
+        raise Exception(f"Unable to get API variables from variables json: {e}")
     url = make_url(coords, variables)
     response = get_data_from_api(url)
     df = response_to_pandas(response, variables)

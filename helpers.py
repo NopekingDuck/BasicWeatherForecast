@@ -1,11 +1,15 @@
 import json
+from json import JSONDecodeError
 
 
 def process_df(dataframe):
     out_df = dataframe
     # get dictionary of weather codes
-    with open("static/assets/json/weather_codes.json") as wc_json:
-        weather_codes = json.load(wc_json)
+    try:
+        with open("static/assets/json/weather_codes.json") as wc_json:
+            weather_codes = json.load(wc_json)
+    except JSONDecodeError as e:
+        raise Exception("Unable to get API variables from weather codes json: {e}")
 
     #   make a new column in the dataframe containing the weather string matching provided weather code in that row
     weather = []
