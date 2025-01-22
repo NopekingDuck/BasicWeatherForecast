@@ -1,52 +1,81 @@
 import datetime
-import openmeteo_requests
-import requests_cache
+import json
+import urllib3
 import pandas as pd
-from retry_requests import retry
+from json import JSONDecodeError
+from urllib.parse import urlencode
+from urllib3.util import Timeout
+from urllib3 import Retry
 
 
-def get_weather(coords):
-    # Setup the Open-Meteo API client with cache and retry on error
-    cache_session = requests_cache.CachedSession('.cache', expire_after=3600)
-    retry_session = retry(cache_session, retries=5, backoff_factor=0.2)
-    openmeteo = openmeteo_requests.Client(session=retry_session)
-
-    # Make sure all required weather variables are listed here
-    # The order of variables in hourly or daily is important to assign them correctly below
+def make_url(coords, variables):
     url = "https://api.open-meteo.com/v1/forecast"
 
-    #prepare the parameters: coords + variables + date
-    variables = {
-        "hourly": ["temperature_2m", "weather_code", "wind_speed_10m"],
-        "wind_speed_unit": "mph",
-        "timezone": "GMT",
-    }
     start_end = {
         "start_date": datetime.date.today(),
         "end_date": datetime.date.today()
     }
     params = coords | variables | start_end
-    responses = openmeteo.weather_api(url, params=params)
+    encoded_params = urlencode(params, doseq=True)
+    full_url = url + "?" + encoded_params
+    return full_url
 
-    # Process hourly data. The order of variables needs to be the same as requested.
-    response = responses[0]
-    hourly = response.Hourly()
-    hourly_temperature_2m = hourly.Variables(0).ValuesAsNumpy()
-    hourly_weather_code = hourly.Variables(1).ValuesAsNumpy()
-    hourly_wind_speed_10m = hourly.Variables(2).ValuesAsNumpy()
 
-    # create dataframe of hourly data
-    hourly_data = {"date": pd.date_range(
-        start=pd.to_datetime(hourly.Time(), unit="s", utc=True),
-        end=pd.to_datetime(hourly.TimeEnd(), unit="s", utc=True),
-        freq=pd.Timedelta(seconds=hourly.Interval()),
-        inclusive="left"
-    ), "temperature_2m": hourly_temperature_2m, "weather_code": hourly_weather_code,
-        "wind_speed_10m": hourly_wind_speed_10m
+def get_data_from_api(url):
+    retries = Retry(
+        total=5,
+        backoff_factor=0.2,
+        status_forcelist=[500, 502, 503, 504]
+    )
+
+    http = urllib3.PoolManager(retries=retries)
+
+    try:
+        response = http.request("GET", url, timeout=Timeout(connect=1.0, read=2.0))
+        if response.status >= 400:
+            print(f"Error connecting to api. HTTP error status code: {response.status}")
+        else:
+            print("Request successful")
+            data = response.data
+            values = json.loads(data)
+            return values
+    except urllib3.exceptions.MaxRetryError as e:
+        print(f"Max retries exceeded with url: {e.reason}")
+    except urllib3.exceptions.TimeoutError as e:
+        print(f"Request timed out: {e}")
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+
+
+def response_to_pandas(response, weather_types):
+    try:
+        hourly = response["hourly"]
+    except TypeError as e:
+        print("No response received from Weather source")
+    date_column = {
+        "date": pd.date_range(
+                start=pd.to_datetime(hourly["time"][0]),
+                end=pd.to_datetime(hourly["time"][len(hourly["time"]) - 1]),
+                freq="h",
+            )
     }
+
+    optional_weather = {}
+    for wt in weather_types["hourly"]:
+        optional_weather[wt] = hourly[wt]
+
+    hourly_data = date_column | optional_weather
     hourly_dataframe = pd.DataFrame(data=hourly_data)
-
-    # Extract rows that match the timestamp for a 3 hourly forecast
     three_hourly_dataframe = hourly_dataframe.iloc[::3, :]
-
     return three_hourly_dataframe
+
+def get_weather(coords):
+    try:
+        with open("static/assets/json/variables.json") as variables_json:
+            variables = json.load(variables_json)
+    except JSONDecodeError as e:
+        print(e)
+    url = make_url(coords, variables)
+    response = get_data_from_api(url)
+    df = response_to_pandas(response, variables)
+    return df

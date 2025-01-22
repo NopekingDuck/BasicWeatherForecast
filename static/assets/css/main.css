@@ -6,26 +6,23 @@
   line-height: 1.5;
   font-size: 1.5rem;
   font-weight: 300;
-  width: auto;
+  min-width: 200px;
   height: auto;
   display: flex;
   place-items: center;
   text-align: center;
-  padding: 3ch;
-  border-radius: 2ch;
+  padding: 10px;
+  border-radius: 5px;
   border: 1px solid hsl(0 0% 83%);
   overflow: hidden;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
   gap: 1px;
-  grid-auto-rows: minmax(100px, auto);
 }
 
 .wrapper {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  grid-auto-rows: minmax(100px, auto);
+  display: flex;
+  overflow-x: auto;
+  white-space: nowrap;
+  padding: 20px;
 }
 
 .header {
@@ -50,8 +47,6 @@ body {
   min-inline-size: 100%;
   margin: 0;
   box-sizing: border-box;
-  display: grid;
-  grid-auto-flow: column;
   gap: 5vmin;
   place-content: center;
   font-family: system-ui;
