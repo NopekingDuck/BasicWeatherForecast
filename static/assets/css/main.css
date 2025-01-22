@@ -6,9 +6,8 @@
   line-height: 1.5;
   font-size: 1.5rem;
   font-weight: 300;
-  min-width: 200px;
-  height: auto;
-  display: flex;
+  min-width: 210px;
+  min-height: auto;
   place-items: center;
   text-align: center;
   padding: 10px;
@@ -16,6 +15,7 @@
   border: 1px solid hsl(0 0% 83%);
   overflow: hidden;
   gap: 1px;
+  position: relative;
 }
 
 .wrapper {
@@ -47,6 +47,8 @@ body {
   min-inline-size: 100%;
   margin: 0;
   box-sizing: border-box;
+  display: grid;
+  grid-auto-flow: column;
   gap: 5vmin;
   place-content: center;
   font-family: system-ui;
