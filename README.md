@@ -11,11 +11,9 @@ This is a project to get weather data from the https://open-meteo.com/ API and d
 Index:
 ![A screenshot of the index of the weather app](https://github.com/user-attachments/assets/f3dd41d5-9a58-4845-9fa1-4a48bc2b5f6f)
 
-Slightly zoomed out results:
-![A screenshot of the results page of the weather app, slightly zoomed out](https://github.com/user-attachments/assets/ccc2807a-f85b-48bf-af44-df17dfa5481a)
+Results:
+![A screenshot of the results cards lined up in a row with the data in them](https://github.com/user-attachments/assets/8e73d040-b3b8-478c-98e0-5b5975ebaf0e)
 
-
-<h2>Getting Started</h2>
 <ol>
   <li>Clone the repository</li>
   <li>pip install -r requirements.txt</li>
